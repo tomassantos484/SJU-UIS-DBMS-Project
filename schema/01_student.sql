@@ -1,3 +1,6 @@
+USE `StJohnsUIS`;
+DROP TABLE IF EXISTS Student;
+
 CREATE TABLE Student (
     student_xnumber VARCHAR(9) PRIMARY KEY NOT NULL,
     stormcard_id VARCHAR(8) UNIQUE NOT NULL,

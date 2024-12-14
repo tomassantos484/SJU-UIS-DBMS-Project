@@ -3,7 +3,7 @@ CREATE TABLE Enrollment (
     student_xnumber VARCHAR(9) NOT NULL,
     section_id INT NOT NULL,
     grade VARCHAR(2),
-    enrollment_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    enrollment_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     -- Constraints
 
@@ -11,7 +11,7 @@ CREATE TABLE Enrollment (
     CONSTRAINT uq_student_section UNIQUE (student_xnumber, section_id),
 
     -- Ensures that the student X-number is in the correct format
-    CONSTRAINT chk_student_xnumber CHECK (student_xnumber REGEXP '^X[0-9]{8}$'),
+    CONSTRAINT chk_enrollment_student_xnumber CHECK (student_xnumber REGEXP '^X[0-9]{8}$'),
 
     -- Ensures valid grade values
     CONSTRAINT chk_grade CHECK (grade IN ('A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F')),

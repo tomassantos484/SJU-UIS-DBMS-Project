@@ -1,3 +1,6 @@
+USE `StJohnsUIS`;
+DROP TABLE IF EXISTS Course;
+
 CREATE TABLE Course (
     -- Course Table
     crn_number INT PRIMARY KEY NOT NULL,

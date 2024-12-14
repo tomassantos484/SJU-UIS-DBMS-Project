@@ -1,3 +1,6 @@
+USE `StJohnsUIS`;
+DROP TABLE IF EXISTS Instructor;
+
 CREATE TABLE Instructor (
     -- Instructor Table
     instructor_xnumber VARCHAR(9) PRIMARY KEY NOT NULL,
@@ -16,9 +19,6 @@ CREATE TABLE Instructor (
 
     -- Ensures the X-Number is exactly 9 characters, starting with 'X'
     CONSTRAINT chk_instructor_xnumber CHECK (instructor_xnumber REGEXP '^X[0-9]{8}$'),
-
-    -- Ensures the date of birth is not in the future
-    CONSTRAINT chk_instructor_dob CHECK (date_of_birth <= CURDATE()),
 
     -- Limits valid college names
     CONSTRAINT chk_instructor_college CHECK (
@@ -42,12 +42,48 @@ CREATE TABLE Instructor (
         phone_number REGEXP '^\\+?[0-9]{10,15}$'
     ),
 
-    -- Ensures the date of hire is not in the future
-    CONSTRAINT chk_date_of_hire CHECK (date_of_hire <= CURDATE()),
-
-    -- Ensures the date of hire is after the date of birth
-    CONSTRAINT chk_hire_after_birth CHECK (date_of_hire > date_of_birth),
-
     -- Ensures gender is either 'Male' or 'Female'
-    CONSTRAINT chk_gender CHECK (gender IN ('Male', 'Female'))
+    CONSTRAINT chk_instructor_gender CHECK (gender IN ('Male', 'Female'))
 );
+
+-- Trigger to enforce that date_of_birth is not in the future
+DELIMITER //
+CREATE TRIGGER trg_check_instructor_dob_before_insert
+BEFORE INSERT ON Instructor
+FOR EACH ROW
+BEGIN
+    IF NEW.date_of_birth > CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Date of birth cannot be in the future.';
+    END IF;
+END;
+//
+DELIMITER ;
+
+-- Trigger to enforce that date_of_hire is not in the future
+DELIMITER //
+CREATE TRIGGER trg_check_instructor_date_of_hire_before_insert
+BEFORE INSERT ON Instructor
+FOR EACH ROW
+BEGIN
+    IF NEW.date_of_hire > CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Date of hire cannot be in the future.';
+    END IF;
+END;
+//
+DELIMITER ;
+
+-- Trigger to enforce that date_of_hire is after date_of_birth
+DELIMITER //
+CREATE TRIGGER trg_check_instructor_hire_after_birth_before_insert
+BEFORE INSERT ON Instructor
+FOR EACH ROW
+BEGIN
+    IF NEW.date_of_hire <= NEW.date_of_birth THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Date of hire must be after the date of birth.';
+    END IF;
+END;
+//
+DELIMITER ;
