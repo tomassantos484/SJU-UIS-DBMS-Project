@@ -14,6 +14,7 @@ CREATE TABLE Instructor (
     gender VARCHAR(6) NOT NULL,
     phone_number VARCHAR(15) UNIQUE NOT NULL,
     date_of_hire DATE NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
 
     -- Constraints
 
@@ -34,7 +35,7 @@ CREATE TABLE Instructor (
 
     -- Ensures email matches a basic St. John's University format
     CONSTRAINT chk_instructor_email CHECK (
-        email REGEXP '^[a-z]+\\.[a-z]+[0-9]{2}@stjohns\\.edu$'
+        email REGEXP '^[a-z]{1,7}[a-z]@stjohns\\.edu$'
     ),
 
     -- Ensures phone numbers follow a standard international format
