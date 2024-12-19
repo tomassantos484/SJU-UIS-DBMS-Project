@@ -1,24 +1,34 @@
 USE `StJohnsUIS`;
+
 DROP TABLE IF EXISTS Course;
 
 CREATE TABLE Course (
-    -- Course Table
-    crn_number INT PRIMARY KEY NOT NULL,
-    course_title VARCHAR(100) NOT NULL UNIQUE,
+    crn_number INT NOT NULL,
+    course_title VARCHAR(100) NOT NULL,
     course_description VARCHAR(255) NOT NULL,
     instructor_xnumber VARCHAR(9) NOT NULL,
-    credits TINYINT NOT NULL CHECK (credits BETWEEN 1 AND 5),
+    credits TINYINT NOT NULL,
     department VARCHAR(100) NOT NULL,
+    course_number VARCHAR(10) DEFAULT NULL,
 
-    -- Constraints
+    -- Primary Key
+    PRIMARY KEY (crn_number),
+
+    -- Unique Constraint
+    UNIQUE (course_title),
+
+    -- Indexes
+    KEY idx_course_title (course_title),
+    KEY idx_instructor_xnumber (instructor_xnumber),
+    KEY idx_department (department),
+
+    -- Foreign Key
+    FOREIGN KEY (instructor_xnumber) REFERENCES Instructor(instructor_xnumber),
+
+    -- Check Constraints
     CONSTRAINT chk_crn_number CHECK (crn_number BETWEEN 10000 AND 99999),
-
-    -- Foreign Key for Instructor
-    CONSTRAINT fk_instructor FOREIGN KEY (instructor_xnumber) 
-    REFERENCES Instructor(instructor_xnumber)
-);
-
--- Indexes
-CREATE INDEX idx_course_title ON Course(course_title);
-CREATE INDEX idx_instructor_xnumber ON Course(instructor_xnumber);
-CREATE INDEX idx_department ON Course(department);
+    CONSTRAINT chk_credits CHECK (credits BETWEEN 1 AND 5)
+) 
+ENGINE=InnoDB 
+DEFAULT CHARSET=utf8mb4 
+COLLATE=utf8mb4_0900_ai_ci;
