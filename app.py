@@ -12,14 +12,17 @@ load_dotenv()
 app = Flask(__name__)
 
 # Database configuration
-db_user = os.getenv('DB_USER')
-db_password = os.getenv('DB_PASSWORD')
-db_host = os.getenv('DB_HOST')
-db_name = os.getenv('DB_NAME')
-database_url = os.getenv('DATABASE_URL', f"mysql+mysqlconnector://{db_user}:{db_password}@{db_host}/{db_name}")
+database_url = os.getenv('DATABASE_URL')
 
-if database_url.startswith("mysql://"):
+if database_url and database_url.startswith("mysql://"):
     database_url = database_url.replace("mysql://", "mysql+mysqlconnector://", 1)
+else:
+    # Fallback to local database
+    db_user = os.getenv('DB_USER')
+    db_password = os.getenv('DB_PASSWORD')
+    db_host = os.getenv('DB_HOST')
+    db_name = os.getenv('DB_NAME')
+    database_url = f"mysql+mysqlconnector://{db_user}:{db_password}@{db_host}/{db_name}"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -348,6 +351,13 @@ def delete_enrollment(student_xnumber, section_id, crn_number):
         flash(f'Error deleting enrollment: {str(e)}', 'error')
     
     return redirect(url_for('enrollments'))
+
+@app.cli.command("init-db")
+def init_db():
+    """Initialize the database."""
+    with app.app_context():
+        db.create_all()
+        print("Database initialized!")
 
 if __name__ == '__main__':
     app.run(debug=True)
