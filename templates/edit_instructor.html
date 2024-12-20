@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">Edit Instructor</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="instructor_xnumber">X-Number</label>
+            <input type="text" value="{{ instructor.instructor_xnumber }}" disabled>
+        </div>
+        
+        <div class="form-group">
+            <label for="stormcard_id">StormCard ID</label>
+            <input type="text" id="stormcard_id" name="stormcard_id" value="{{ instructor.stormcard_id }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" value="{{ instructor.first_name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" value="{{ instructor.last_name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date_of_birth">Date of Birth</label>
+            <input type="date" id="date_of_birth" name="date_of_birth" value="{{ instructor.date_of_birth.strftime('%Y-%m-%d') }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="college">College</label>
+            <select id="college" name="college" required>
+                <option value="">Select College</option>
+                {% set colleges = [
+                    "College of Arts and Sciences",
+                    "The School of Education",
+                    "The Peter J. Tobin College of Business",
+                    "College of Pharmacy and Health Sciences",
+                    "The Lesley H. and William L. Collins College of Professional Studies"
+                ] %}
+                {% for college in colleges %}
+                    <option value="{{ college }}" {% if instructor.college == college %}selected{% endif %}>{{ college }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="department">Department</label>
+            <input type="text" id="department" name="department" value="{{ instructor.department }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ instructor.email }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                {% for gender in ["Male", "Female", "Other"] %}
+                    <option value="{{ gender }}" {% if instructor.gender == gender %}selected{% endif %}>{{ gender }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <input type="tel" id="phone_number" name="phone_number" 
+                   value="{{ instructor.phone_number }}"
+                   required 
+                   pattern="\d{10}"
+                   title="Please enter 10 digits without any separators">
+        </div>
+        
+        <div class="form-group">
+            <label for="date_of_hire">Date of Hire</label>
+            <input type="date" id="date_of_hire" name="date_of_hire" value="{{ instructor.date_of_hire.strftime('%Y-%m-%d') }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="salary">Salary</label>
+            <input type="number" id="salary" name="salary" step="0.01" min="0" value="{{ instructor.salary }}" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-button">Update Instructor</button>
+            <a href="{{ url_for('view_instructor', instructor_xnumber=instructor.instructor_xnumber) }}" class="cancel-button">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

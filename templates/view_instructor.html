@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="detail-container">
+    <h2 class="detail-title">Instructor Details</h2>
+    
+    <div class="detail-section">
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>X-Number:</label>
+                <span>{{ instructor.instructor_xnumber }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Name:</label>
+                <span>{{ instructor.first_name }} {{ instructor.last_name }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Date of Birth:</label>
+                <span>{{ instructor.date_of_birth.strftime('%B %d, %Y') }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Gender:</label>
+                <span>{{ instructor.gender }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Academic Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>College:</label>
+                <span>{{ instructor.college }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Department:</label>
+                <span>{{ instructor.department }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Date of Hire:</label>
+                <span>{{ instructor.date_of_hire.strftime('%B %d, %Y') }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Salary:</label>
+                <span>${{ "%.2f"|format(instructor.salary) }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Contact Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Email:</label>
+                <span>{{ instructor.email }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Phone:</label>
+                <span>{{ instructor.phone_number }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>ID Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>StormCard ID:</label>
+                <span>{{ instructor.stormcard_id }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-bottom-actions">
+        <a href="{{ url_for('instructors') }}" class="back-button">Back to Instructors</a>
+    </div>
+</div>
+{% endblock %} 

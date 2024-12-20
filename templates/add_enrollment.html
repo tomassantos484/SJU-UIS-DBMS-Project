@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">Add New Enrollment</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="student_xnumber">Student</label>
+            <select id="student_xnumber" name="student_xnumber" required>
+                <option value="">Select Student</option>
+                {% for student in students %}
+                    <option value="{{ student.student_xnumber }}">
+                        {{ student.first_name }} {{ student.last_name }} ({{ student.student_xnumber }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="section_id">Section</label>
+            <select id="section_id" name="section_id" required>
+                <option value="">Select Section</option>
+                {% for section in sections %}
+                    <option value="{{ section.section_id }}" data-crn="{{ section.crn_number }}">
+                        {{ section.course.course_title }} - Section {{ section.section_id }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <input type="hidden" id="crn_number" name="crn_number">
+        
+        <div class="form-group">
+            <label for="grade">Grade (Optional)</label>
+            <select id="grade" name="grade">
+                <option value="">No Grade</option>
+                <option value="A">A</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="B-">B-</option>
+                <option value="C+">C+</option>
+                <option value="C">C</option>
+                <option value="C-">C-</option>
+                <option value="D+">D+</option>
+                <option value="D">D</option>
+                <option value="F">F</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="enrollment_date">Enrollment Date</label>
+            <input type="date" id="enrollment_date" name="enrollment_date" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-button">Add Enrollment</button>
+            <a href="{{ url_for('enrollments') }}" class="cancel-button">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('section_id').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const crnNumber = selectedOption.getAttribute('data-crn');
+    document.getElementById('crn_number').value = crnNumber;
+});
+</script>
+{% endblock %} 

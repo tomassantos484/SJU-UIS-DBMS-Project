@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">Edit Course</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="crn_number">CRN Number</label>
+            <input type="number" value="{{ course.crn_number }}" disabled>
+        </div>
+        
+        <div class="form-group">
+            <label for="course_number">Course Number</label>
+            <input type="text" id="course_number" name="course_number" value="{{ course.course_number }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="course_title">Course Title</label>
+            <input type="text" id="course_title" name="course_title" value="{{ course.course_title }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="course_description">Course Description</label>
+            <textarea id="course_description" name="course_description" required rows="4">{{ course.course_description }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="instructor_xnumber">Instructor</label>
+            <select id="instructor_xnumber" name="instructor_xnumber" required>
+                <option value="">Select Instructor</option>
+                {% for instructor in instructors %}
+                    <option value="{{ instructor.instructor_xnumber }}" {% if course.instructor_xnumber == instructor.instructor_xnumber %}selected{% endif %}>
+                        {{ instructor.first_name }} {{ instructor.last_name }} ({{ instructor.instructor_xnumber }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="credits">Credits</label>
+            <input type="number" id="credits" name="credits" min="1" max="4" value="{{ course.credits }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="department">Department</label>
+            <input type="text" id="department" name="department" value="{{ course.department }}" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-button">Update Course</button>
+            <a href="{{ url_for('view_course', crn_number=course.crn_number) }}" class="cancel-button">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

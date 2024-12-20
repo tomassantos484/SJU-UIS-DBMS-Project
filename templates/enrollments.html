@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section-header">
+    <h2>Enrollment Records</h2>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Section</th>
+                <th>Grade</th>
+                <th>Enrollment Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enrollment in enrollments %}
+            <tr>
+                <td>{{ enrollment.student.first_name }} {{ enrollment.student.last_name }}</td>
+                <td>{{ enrollment.section.course.course_title }}</td>
+                <td>{{ enrollment.section.section_id }}</td>
+                <td>{{ enrollment.grade if enrollment.grade else 'N/A' }}</td>
+                <td>{{ enrollment.enrollment_date.strftime('%B %d, %Y') }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <form action="{{ url_for('view_enrollment', student_xnumber=enrollment.student_xnumber, section_id=enrollment.section_id, crn_number=enrollment.crn_number) }}" method="GET">
+                            <button type="submit" class="action-button view">View</button>
+                        </form>
+                        <form action="{{ url_for('edit_enrollment', student_xnumber=enrollment.student_xnumber, section_id=enrollment.section_id, crn_number=enrollment.crn_number) }}" method="GET">
+                            <button type="submit" class="action-button edit">Edit</button>
+                        </form>
+                        <form action="{{ url_for('delete_enrollment', student_xnumber=enrollment.student_xnumber, section_id=enrollment.section_id, crn_number=enrollment.crn_number) }}" method="POST">
+                            <button type="submit" class="action-button delete" onclick="return confirm('Are you sure you want to delete this enrollment?')">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="bottom-actions">
+    <a href="{{ url_for('add_enrollment') }}" class="add-button">Add New Enrollment</a>
+    <a href="{{ url_for('index') }}" class="back-button">Back to Home</a>
+</div>
+{% endblock %} 

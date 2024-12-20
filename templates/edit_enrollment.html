@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">Edit Enrollment</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>Student</label>
+            <input type="text" value="{{ enrollment.student.first_name }} {{ enrollment.student.last_name }}" disabled>
+        </div>
+        
+        <div class="form-group">
+            <label>Course</label>
+            <input type="text" value="{{ enrollment.section.course.course_title }} - Section {{ enrollment.section.section_id }}" disabled>
+        </div>
+        
+        <div class="form-group">
+            <label for="grade">Grade</label>
+            <select id="grade" name="grade">
+                <option value="">No Grade</option>
+                {% for grade in ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "F"] %}
+                    <option value="{{ grade }}" {% if enrollment.grade == grade %}selected{% endif %}>{{ grade }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="enrollment_date">Enrollment Date</label>
+            <input type="date" id="enrollment_date" name="enrollment_date" value="{{ enrollment.enrollment_date.strftime('%Y-%m-%d') }}" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-button">Update Enrollment</button>
+            <a href="{{ url_for('view_enrollment', student_xnumber=enrollment.student_xnumber, section_id=enrollment.section_id, crn_number=enrollment.crn_number) }}" class="cancel-button">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

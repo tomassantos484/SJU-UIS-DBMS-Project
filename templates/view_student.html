@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}View Student - St. John's UIS{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <h2 class="detail-title">Student Details</h2>
+    
+    <div class="detail-section">
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>X-Number:</label>
+                <span>{{ student.student_xnumber }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Name:</label>
+                <span>{{ student.first_name }} {{ student.last_name }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Date of Birth:</label>
+                <span>{{ student.date_of_birth.strftime('%B %d, %Y') }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Gender:</label>
+                <span>{{ student.gender }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Academic Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>College:</label>
+                <span>{{ student.college }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Major:</label>
+                <span>{{ student.major }}</span>
+            </div>
+            <div class="detail-item">
+                <label>GPA:</label>
+                <span>{{ student.gpa }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Admission Date:</label>
+                <span>{{ student.date_of_admission.strftime('%B %d, %Y') }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Expected Graduation:</label>
+                <span>{{ student.year_of_graduation.strftime('%B %d, %Y') }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Contact Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Email:</label>
+                <span>{{ student.email }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Phone:</label>
+                <span>{{ student.phone_number }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>ID Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>StormCard ID:</label>
+                <span>{{ student.stormcard_id }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Library ID:</label>
+                <span>{{ student.library_id }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-bottom-actions">
+        <a href="{{ url_for('students') }}" class="back-button">Back to Students</a>
+    </div>
+</div>
+{% endblock %} 

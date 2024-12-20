@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="detail-container">
+    <h2 class="detail-title">Enrollment Details</h2>
+    
+    <div class="detail-section">
+        <h3>Student Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Student Name:</label>
+                <span>{{ enrollment.student.first_name }} {{ enrollment.student.last_name }}</span>
+            </div>
+            <div class="detail-item">
+                <label>X-Number:</label>
+                <span>{{ enrollment.student.student_xnumber }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Major:</label>
+                <span>{{ enrollment.student.major }}</span>
+            </div>
+            <div class="detail-item">
+                <label>College:</label>
+                <span>{{ enrollment.student.college }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Course Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Course Title:</label>
+                <span>{{ enrollment.section.course.course_title }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Course Number:</label>
+                <span>{{ enrollment.section.course.course_number }}</span>
+            </div>
+            <div class="detail-item">
+                <label>CRN:</label>
+                <span>{{ enrollment.crn_number }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Credits:</label>
+                <span>{{ enrollment.section.course.credits }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Section Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Section ID:</label>
+                <span>{{ enrollment.section.section_id }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Instructor:</label>
+                <span>{{ enrollment.section.instructor.first_name }} {{ enrollment.section.instructor.last_name }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Term:</label>
+                <span>{{ enrollment.section.term }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Location:</label>
+                <span>
+                    {% if enrollment.section.is_online %}
+                        Online
+                    {% else %}
+                        {{ enrollment.section.building_name }} {{ enrollment.section.room_number }}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="detail-item">
+                <label>Dates:</label>
+                <span>{{ enrollment.section.start_date.strftime('%B %d, %Y') }} - {{ enrollment.section.end_date.strftime('%B %d, %Y') }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Enrollment Status:</label>
+                <span>{{ enrollment.section.current_enrollment }}/{{ enrollment.section.max_capacity }} students</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Enrollment Details</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Enrollment Date:</label>
+                <span>{{ enrollment.enrollment_date.strftime('%B %d, %Y') }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Grade:</label>
+                <span>{{ enrollment.grade if enrollment.grade else 'Not Graded' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-bottom-actions">
+        <a href="{{ url_for('enrollments') }}" class="back-button">Back to Enrollments</a>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">Add New Student</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="student_xnumber">X-Number</label>
+            <input type="text" id="student_xnumber" name="student_xnumber" required pattern="X\d{8}" title="X-Number format: X followed by 8 digits">
+        </div>
+        
+        <div class="form-group">
+            <label for="stormcard_id">StormCard ID</label>
+            <input type="text" id="stormcard_id" name="stormcard_id" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="library_id">Library ID</label>
+            <input type="text" id="library_id" name="library_id" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date_of_birth">Date of Birth</label>
+            <input type="date" id="date_of_birth" name="date_of_birth" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="college">College</label>
+            <select id="college" name="college" required>
+                <option value="">Select College</option>
+                <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                <option value="The School of Education">The School of Education</option>
+                <option value="The Peter J. Tobin College of Business">The Peter J. Tobin College of Business</option>
+                <option value="College of Pharmacy and Health Sciences">College of Pharmacy and Health Sciences</option>
+                <option value="The Lesley H. and William L. Collins College of Professional Studies">The Lesley H. and William L. Collins College of Professional Studies</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="major">Major</label>
+            <input type="text" id="major" name="major" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="gpa">GPA</label>
+            <input type="number" id="gpa" name="gpa" step="0.01" min="0" max="4" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <input type="tel" id="phone_number" name="phone_number" 
+                   required 
+                   pattern="\d{10}"
+                   title="Please enter 10 digits without any separators">
+        </div>
+        
+        <div class="form-group">
+            <label for="date_of_admission">Date of Admission</label>
+            <input type="date" id="date_of_admission" name="date_of_admission" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="year_of_graduation">Expected Graduation Date</label>
+            <input type="date" id="year_of_graduation" name="year_of_graduation" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-button">Add Student</button>
+            <a href="{{ url_for('students') }}" class="cancel-button">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

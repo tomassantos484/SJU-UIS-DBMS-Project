@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="detail-container">
+    <h2 class="detail-title">Course Details</h2>
+    
+    <div class="detail-section">
+        <h3>Basic Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>CRN Number:</label>
+                <span>{{ course.crn_number }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Course Number:</label>
+                <span>{{ course.course_number }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Course Title:</label>
+                <span>{{ course.course_title }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Credits:</label>
+                <span>{{ course.credits }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Course Description</h3>
+        <div class="detail-grid">
+            <div class="detail-item full-width">
+                <span>{{ course.course_description }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h3>Department Information</h3>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <label>Department:</label>
+                <span>{{ course.department }}</span>
+            </div>
+            <div class="detail-item">
+                <label>Instructor:</label>
+                <span>{{ course.instructor.first_name }} {{ course.instructor.last_name }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-bottom-actions">
+        <a href="{{ url_for('courses') }}" class="back-button">Back to Courses</a>
+    </div>
+</div>
+{% endblock %} 

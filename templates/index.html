@@ -1,11 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="welcome-section">
+    <h1>Welcome to St. John's UIS</h1>
+    <p>Select an option from the navigation menu to begin:</p>
+</div>
+
+<div class="button-grid">
+    <a href="{{ url_for('students') }}" class="menu-button students">
+        <h3>Students</h3>
+        <p>Manage student records</p>
+    </a>
+    <a href="{{ url_for('courses') }}" class="menu-button courses">
+        <h3>Courses</h3>
+        <p>View and manage courses</p>
+    </a>
+    <a href="{{ url_for('instructors') }}" class="menu-button instructors">
+        <h3>Instructors</h3>
+        <p>Manage instructor information</p>
+    </a>
+    <a href="{{ url_for('enrollments') }}" class="menu-button enrollments">
+        <h3>Enrollments</h3>
+        <p>Handle course enrollments</p>
+    </a>
+</div>
+{% endblock %}
