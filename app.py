@@ -16,7 +16,10 @@ db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
 db_host = os.getenv('DB_HOST')
 db_name = os.getenv('DB_NAME')
-database_url = f"mysql+mysqlconnector://{db_user}:{db_password}@{db_host}/{db_name}"
+database_url = os.getenv('DATABASE_URL', f"mysql+mysqlconnector://{db_user}:{db_password}@{db_host}/{db_name}")
+
+if database_url.startswith("mysql://"):
+    database_url = database_url.replace("mysql://", "mysql+mysqlconnector://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
