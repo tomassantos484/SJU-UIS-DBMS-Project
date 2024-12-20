@@ -9,7 +9,10 @@
 </head>
 <body>
     <header>
-        <h1>St. John's University Information System (UIS)</h1>
+        <div class="header-content">
+            <img src="{{ url_for('static', filename='images/stj_logo.png') }}" alt="St. John's University Logo" class="header-logo">
+            <h1>St. John's University Information System (UIS)</h1>
+        </div>
         <nav>
             <ul>
                 <li><a href="{{ url_for('index') }}">Home</a></li>

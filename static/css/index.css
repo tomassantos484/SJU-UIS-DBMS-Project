@@ -385,3 +385,17 @@ form {
     grid-column: 1 / -1;
     white-space: pre-wrap;
 }
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.header-logo {
+    height: 60px;  /* Adjust this value based on your logo and preferences */
+    width: auto;
+    object-fit: contain;
+}
