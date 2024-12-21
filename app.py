@@ -14,6 +14,7 @@ app = Flask(__name__)
 # Database configuration
 database_url = os.getenv('DATABASE_URL')
 
+# Railway database configuration
 if database_url and database_url.startswith("mysql://"):
     database_url = database_url.replace("mysql://", "mysql+mysqlconnector://", 1)
 else:
@@ -30,30 +31,36 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-default-secret-key-here
 
 db.init_app(app)  # Initialize db with app
 
+# Home page
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# Students page
 @app.route('/students')
 def students():
     students = Student.query.all()
     return render_template('students.html', students=students)
 
+# Courses page
 @app.route('/courses')
 def courses():
     courses = Course.query.all()
     return render_template('courses.html', courses=courses)
 
+# Instructors page
 @app.route('/instructors')
 def instructors():
     instructors = Instructor.query.all()
     return render_template('instructors.html', instructors=instructors)
 
+# Enrollments page
 @app.route('/enrollments')
 def enrollments():
     enrollments = Enrollment.query.all()
     return render_template('enrollments.html', enrollments=enrollments)
 
+# Add student page
 @app.route('/students/add', methods=['GET', 'POST'])
 def add_student():
     if request.method == 'POST':
@@ -89,11 +96,13 @@ def add_student():
     
     return render_template('add_student.html')
 
+# View student page
 @app.route('/students/<student_xnumber>')
 def view_student(student_xnumber):
     student = Student.query.get_or_404(student_xnumber)
     return render_template('view_student.html', student=student)
 
+# Edit student page
 @app.route('/students/<student_xnumber>/edit', methods=['GET', 'POST'])
 def edit_student(student_xnumber):
     student = Student.query.get_or_404(student_xnumber)
@@ -124,6 +133,7 @@ def edit_student(student_xnumber):
     
     return render_template('edit_student.html', student=student)
 
+# Delete student page
 @app.route('/students/<student_xnumber>/delete', methods=['POST'])
 def delete_student(student_xnumber):
     student = Student.query.get_or_404(student_xnumber)
@@ -137,6 +147,7 @@ def delete_student(student_xnumber):
     
     return redirect(url_for('students'))
 
+# Add instructor page
 @app.route('/instructors/add', methods=['GET', 'POST'])
 def add_instructor():
     if request.method == 'POST':
@@ -167,11 +178,13 @@ def add_instructor():
     
     return render_template('add_instructor.html')
 
+# View instructor page
 @app.route('/instructors/<instructor_xnumber>')
 def view_instructor(instructor_xnumber):
     instructor = Instructor.query.get_or_404(instructor_xnumber)
     return render_template('view_instructor.html', instructor=instructor)
 
+# Edit instructor page
 @app.route('/instructors/<instructor_xnumber>/edit', methods=['GET', 'POST'])
 def edit_instructor(instructor_xnumber):
     instructor = Instructor.query.get_or_404(instructor_xnumber)
@@ -200,6 +213,7 @@ def edit_instructor(instructor_xnumber):
     
     return render_template('edit_instructor.html', instructor=instructor)
 
+# Delete instructor page
 @app.route('/instructors/<instructor_xnumber>/delete', methods=['POST'])
 def delete_instructor(instructor_xnumber):
     instructor = Instructor.query.get_or_404(instructor_xnumber)
@@ -213,6 +227,7 @@ def delete_instructor(instructor_xnumber):
     
     return redirect(url_for('instructors'))
 
+# Add course page
 @app.route('/courses/add', methods=['GET', 'POST'])
 def add_course():
     if request.method == 'POST':
@@ -238,11 +253,13 @@ def add_course():
     
     return render_template('add_course.html', instructors=Instructor.query.all())
 
+# View course page
 @app.route('/courses/<int:crn_number>')
 def view_course(crn_number):
     course = Course.query.get_or_404(crn_number)
     return render_template('view_course.html', course=course)
 
+# Edit course page
 @app.route('/courses/<int:crn_number>/edit', methods=['GET', 'POST'])
 def edit_course(crn_number):
     course = Course.query.get_or_404(crn_number)
@@ -266,6 +283,7 @@ def edit_course(crn_number):
     
     return render_template('edit_course.html', course=course, instructors=Instructor.query.all())
 
+# Delete course page
 @app.route('/courses/<int:crn_number>/delete', methods=['POST'])
 def delete_course(crn_number):
     course = Course.query.get_or_404(crn_number)
@@ -279,6 +297,7 @@ def delete_course(crn_number):
     
     return redirect(url_for('courses'))
 
+# Add enrollment page
 @app.route('/enrollments/add', methods=['GET', 'POST'])
 def add_enrollment():
     if request.method == 'POST':
@@ -306,11 +325,13 @@ def add_enrollment():
                          students=Student.query.all(),
                          sections=Section.query.all())
 
+# View enrollment page
 @app.route('/enrollments/<student_xnumber>/<int:section_id>/<int:crn_number>')
 def view_enrollment(student_xnumber, section_id, crn_number):
     enrollment = Enrollment.query.get_or_404((student_xnumber, section_id, crn_number))
     return render_template('view_enrollment.html', enrollment=enrollment)
 
+# Edit enrollment page
 @app.route('/enrollments/<student_xnumber>/<int:section_id>/<int:crn_number>/edit', methods=['GET', 'POST'])
 def edit_enrollment(student_xnumber, section_id, crn_number):
     enrollment = Enrollment.query.get_or_404((student_xnumber, section_id, crn_number))
@@ -339,6 +360,7 @@ def edit_enrollment(student_xnumber, section_id, crn_number):
                          students=Student.query.all(),
                          sections=Section.query.all())
 
+# Delete enrollment page
 @app.route('/enrollments/<student_xnumber>/<int:section_id>/<int:crn_number>/delete', methods=['POST'])
 def delete_enrollment(student_xnumber, section_id, crn_number):
     enrollment = Enrollment.query.get_or_404((student_xnumber, section_id, crn_number))
@@ -352,12 +374,23 @@ def delete_enrollment(student_xnumber, section_id, crn_number):
     
     return redirect(url_for('enrollments'))
 
+# Initialize database
 @app.cli.command("init-db")
 def init_db():
     """Initialize the database."""
-    with app.app_context():
-        db.create_all()
-        print("Database initialized!")
+    try:
+        with app.app_context():
+            print("Starting database initialization...")
+            print(f"Database URL: {app.config['SQLALCHEMY_DATABASE_URI']}")
+            db.create_all()
+            print("Tables created successfully!")
+            # Verify tables were created
+            inspector = db.inspect(db.engine)
+            tables = inspector.get_table_names()
+            print(f"Created tables: {tables}")
+    except Exception as e:
+        print(f"Error initializing database: {str(e)}")
 
+# Run the app
 if __name__ == '__main__':
     app.run(debug=True)
