@@ -26,7 +26,7 @@ CREATE TABLE Section (
     CONSTRAINT section_ibfk_1 FOREIGN KEY (crn_number) REFERENCES Course (crn_number)
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT section_ibfk_2 FOREIGN KEY (instructor_xnumber) REFERENCES Instructor (instructor_xnumber)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE RESTRICT ON UPDATE CASCADE,
 
     -- Constraints
     CONSTRAINT chk_building_name CHECK (
@@ -56,3 +56,11 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+-- Add cascade rules for Section deletion/updates
+ALTER TABLE Enrollment
+    ADD CONSTRAINT fk_enrollment_section
+    FOREIGN KEY (section_id, crn_number) 
+    REFERENCES Section(section_id, crn_number)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;

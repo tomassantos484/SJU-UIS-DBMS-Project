@@ -19,6 +19,21 @@ CREATE TABLE Instructor (
     UNIQUE (stormcard_id),
     UNIQUE (email),
     UNIQUE (phone_number),
+    
+    -- When an instructor's college changes, update related records
+    CONSTRAINT fk_instructor_college
+    FOREIGN KEY (college) 
+    REFERENCES College(college_name)
+    ON DELETE RESTRICT    -- Prevent deletion of college with active instructors
+    ON UPDATE CASCADE,    -- If college name changes, update instructor records
+    
+    -- When an instructor's department changes, update related records
+    CONSTRAINT fk_instructor_department
+    FOREIGN KEY (department) 
+    REFERENCES Department(department_name)
+    ON DELETE RESTRICT    -- Prevent deletion of department with active instructors
+    ON UPDATE CASCADE,    -- If department name changes, update instructor records
+
     CONSTRAINT chk_instructor_college CHECK (
         college IN (
             'St. John''s College of Liberal Arts and Sciences',
@@ -45,6 +60,7 @@ CREATE TABLE Instructor (
         salary >= 0 AND salary <= 500000
     )
 );
+
 
 DELIMITER $$
 

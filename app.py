@@ -5,6 +5,7 @@ import os
 from extensions import db
 from models import Student, Instructor, Course, Section, Enrollment
 import secrets
+from sqlalchemy.exc import IntegrityError
 
 # Load environment variables
 load_dotenv()
@@ -141,6 +142,9 @@ def delete_student(student_xnumber):
         db.session.delete(student)
         db.session.commit()
         flash('Student deleted successfully!', 'success')
+    except IntegrityError as e:
+        db.session.rollback()
+        flash(f'Cannot delete student due to existing records: {str(e)}', 'error')
     except Exception as e:
         db.session.rollback()
         flash(f'Error deleting student: {str(e)}', 'error')

@@ -23,7 +23,9 @@ CREATE TABLE Course (
     KEY idx_department (department),
 
     -- Foreign Key
-    FOREIGN KEY (instructor_xnumber) REFERENCES Instructor(instructor_xnumber),
+    FOREIGN KEY (instructor_xnumber) REFERENCES Instructor(instructor_xnumber)
+    ON DELETE RESTRICT      -- Prevent deletion of instructor with active courses
+    ON UPDATE CASCADE,      -- If instructor X-number changes, update in courses
 
     -- Check Constraints
     CONSTRAINT chk_crn_number CHECK (crn_number BETWEEN 10000 AND 99999),

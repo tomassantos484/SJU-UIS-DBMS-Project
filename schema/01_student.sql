@@ -78,3 +78,11 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+-- Add cascade rules for Student deletion/updates
+ALTER TABLE Enrollment
+    ADD CONSTRAINT fk_enrollment_student
+    FOREIGN KEY (student_xnumber) 
+    REFERENCES Student(student_xnumber)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
