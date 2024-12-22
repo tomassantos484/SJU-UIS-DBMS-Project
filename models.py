@@ -127,6 +127,18 @@ class Course(db.Model):
                              cascade='all, delete-orphan',
                              passive_deletes=True)
 
+    __table_args__ = (
+        db.CheckConstraint(
+            "(crn_number BETWEEN 70000 AND 79999) OR "  # Fall courses
+            "(crn_number BETWEEN 10000 AND 19999)",     # Spring courses
+            name='chk_crn_term'
+        ),
+        db.CheckConstraint(
+            "credits BETWEEN 1 AND 4",
+            name='chk_credits'
+        )
+    )
+
 class Section(db.Model):
     __tablename__ = 'Section'
     
@@ -178,10 +190,12 @@ class Section(db.Model):
     )
 
 @event.listens_for(Section, 'before_insert')
-def validate_crn_term(mapper, connection, target):
-    if (target.term == 'Fall' and not str(target.crn_number).startswith('7')) or \
-       (target.term == 'Spring' and not str(target.crn_number).startswith('1')):
-        raise ValueError('CRN number does not match the term pattern.')
+@event.listens_for(Section, 'before_update')
+def validate_section_crn(mapper, connection, target):
+    if target.term == 'Fall' and not (70000 <= target.crn_number <= 79999):
+        raise ValueError("Fall courses must have CRN numbers between 70000-79999")
+    elif target.term == 'Spring' and not (10000 <= target.crn_number <= 19999):
+        raise ValueError("Spring courses must have CRN numbers between 10000-19999")
 
 class Enrollment(db.Model):
     __tablename__ = 'Enrollment'

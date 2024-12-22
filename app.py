@@ -236,8 +236,14 @@ def delete_instructor(instructor_xnumber):
 def add_course():
     if request.method == 'POST':
         try:
+            crn_number = int(request.form['crn_number'])
+            
+            # Validate CRN number
+            if not ((70000 <= crn_number <= 79999) or (10000 <= crn_number <= 19999)):
+                raise ValueError("CRN must start with 7 for Fall courses or 1 for Spring courses")
+            
             new_course = Course(
-                crn_number=request.form['crn_number'],
+                crn_number=crn_number,
                 course_title=request.form['course_title'],
                 course_description=request.form['course_description'],
                 instructor_xnumber=request.form['instructor_xnumber'],
@@ -249,6 +255,10 @@ def add_course():
             db.session.commit()
             flash('Course added successfully!', 'success')
             return redirect(url_for('courses'))
+        except ValueError as e:
+            db.session.rollback()
+            flash(str(e), 'error')
+            return render_template('add_course.html', instructors=Instructor.query.all())
         except Exception as e:
             db.session.rollback()
             print("Error:", str(e))
@@ -377,6 +387,41 @@ def delete_enrollment(student_xnumber, section_id, crn_number):
         flash(f'Error deleting enrollment: {str(e)}', 'error')
     
     return redirect(url_for('enrollments'))
+
+# Add section page
+@app.route('/sections/add', methods=['GET', 'POST'])
+def add_section():
+    if request.method == 'POST':
+        try:
+            crn_number = int(request.form['crn_number'])
+            term = request.form['term']
+            
+            # Validate CRN number matches term
+            if term == 'Fall' and not (70000 <= crn_number <= 79999):
+                raise ValueError("Fall courses must have CRN numbers between 70000-79999")
+            elif term == 'Spring' and not (10000 <= crn_number <= 19999):
+                raise ValueError("Spring courses must have CRN numbers between 10000-19999")
+            
+            new_section = Section(
+                section_id=request.form['section_id'],
+                crn_number=crn_number,
+                term=term,
+                # ... rest of the section fields ...
+            )
+            db.session.add(new_section)
+            db.session.commit()
+            flash('Section added successfully!', 'success')
+            return redirect(url_for('sections'))
+        except ValueError as e:
+            db.session.rollback()
+            flash(str(e), 'error')
+            return render_template('add_section.html')
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error adding section: {str(e)}', 'error')
+            return render_template('add_section.html')
+    
+    return render_template('add_section.html')
 
 # Initialize database
 @app.cli.command("init-db")

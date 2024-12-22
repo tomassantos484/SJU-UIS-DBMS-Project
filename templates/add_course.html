@@ -6,7 +6,12 @@
     <form method="POST">
         <div class="form-group">
             <label for="crn_number">CRN Number</label>
-            <input type="number" id="crn_number" name="crn_number" required>
+            <input type="number" id="crn_number" name="crn_number" required 
+                   min="10000" max="79999" 
+                   title="CRN must start with 7 for Fall courses (70000-79999) or 1 for Spring courses (10000-19999)">
+            <small class="form-text text-muted">
+                Fall courses: 70000-79999, Spring courses: 10000-19999
+            </small>
         </div>
         
         <div class="form-group">
