@@ -5,6 +5,8 @@ The **SJU-UIS-DBMS Project** is a graduate-level initiative designed to create a
 
 The project implements a clean, scalable system that reduces redundancy and improves data integrity, offering a practical application of database concepts. The database is built to streamline academic data management, ensuring accuracy, consistency, and scalability while reinforcing the core principles taught in the **Database Management Systems (DBMS)** course.
 
+<img width="1052" alt="image" src="https://github.com/user-attachments/assets/8f7c3f5a-c45e-44dc-9db7-adbdcecceb32" />
+
 ---
 
 ## **Technology Stack**
